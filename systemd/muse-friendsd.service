@@ -1,0 +1,29 @@
+[Unit]
+Description=Muse Friends daemon (muse-friendsd)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=muse-friends
+Group=muse-friends
+WorkingDirectory=/opt/muse-friends
+EnvironmentFile=-/etc/muse-friends/service.env
+ExecStart=/opt/muse-friends/.venv/bin/python -m musefriends.app
+Restart=on-failure
+RestartSec=3
+Environment=PYTHONPATH=/opt/muse-friends/src
+Environment=MUSE_FRIENDS_STATE_DIR=/var/lib/muse-friends
+Environment=MUSE_FRIENDS_HOST=127.0.0.1
+Environment=MUSE_FRIENDS_PORT=8321
+StateDirectory=muse-friends
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/muse-friends
+
+[Install]
+WantedBy=multi-user.target
